@@ -1,7 +1,79 @@
 {% extends 'App1/padre.html'%}
 {% load static %}
-{% block contenidoDinamico%}
 
-<h1>Hola, yo soy Profesores</h1>
+{% block tituloPrincipal%}
+<h1 ><a href="{% url 'Profesores' %}" style="color:#000000">Profesores</a></h1>
+{% endblock%}
 
+{% block bloquePrincipal%}
+{% endblock %}
+
+{% block bloqueFormulario%}
+ 
+ <section class="contact section-bg">
+    <div class="container">
+      <div class="section-title">
+        <h2>Alta de Profesor</h2>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7">
+          {% if mensaje %}
+            <div class="my-3">
+            <div class="sent-message" style="color:#ffffff;background-color:goldenrod;padding:10px;">
+                {{ mensaje}}
+            </div>
+        </div>
+        {% endif %}
+
+          <form action="/app1/profesores/" method="post" role="form" class="php-email-form">
+            <div class="form-group">
+                {{ formulario.nombre }}
+            </div>
+            <div class="form-group mt-3">
+                {{ formulario.apellido }}
+            </div>
+            <div class="form-group mt-3">
+                {{ formulario.email }}
+            </div>
+            <div class="form-group mt-3">
+                {{ formulario.profesion }}
+            </div>
+            <div class="my-3">
+              <div class="loading">Cargando</div>
+              <div class="error-message"></div>
+              <div class="sent-message">El Profesor se ingresó con éxito. Gracias!</div>
+            </div>
+            <div class="text-center">
+                {% csrf_token %}
+                <button type="submit">Ingresar Profesor</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+{% endblock%}
+
+{% block bloqueListado%} 
+<section class="faq">
+    <div class="container">
+      <div class="section-title">
+        <h2>Listado de Profesores ({{ cantidad }})</h2>
+      </div>
+      <ul class="faq-list">
+        {% for profesor in profesores %}
+        <li>
+          <a data-bs-toggle="collapse" class="collapsed" data-bs-target="#faq{{ profesor.id }}">{{ profesor.nombre }} {{ profesor.apellido }} <i class="bx bx-down-arrow-alt icon-show"></i><i class="bx bx-x icon-close"></i></a>
+          <div id="faq{{ profesor.id }}" class="collapse" data-bs-parent=".faq-list">
+            <p>
+                Email: {{ profesor.email }}<br>
+                Profesión: {{ profesor.profesion }}
+            </p>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
 {% endblock%}

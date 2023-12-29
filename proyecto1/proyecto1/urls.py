@@ -20,5 +20,6 @@ from proyecto1.views import saludo
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('App1.urls')),
     path('app1/', include('App1.urls')),
 ]

@@ -1,7 +1,81 @@
 {% extends 'App1/padre.html'%}
 {% load static %}
-{% block contenidoDinamico%}
 
-<h1>Hola, yo soy Entregables</h1>
+{% block tituloPrincipal%}
+<h1 ><a href="{% url 'Entregables' %}" style="color:#000000">Entregables</a></h1>
+{% endblock%}
 
+{% block bloquePrincipal%}
+{% endblock %}
+
+{% block bloqueFormulario%}
+ 
+ <section class="contact section-bg">
+    <div class="container">
+      <div class="section-title">
+        <h2>Alta de Entregables</h2>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7">
+          {% if mensaje %}
+            <div class="my-3">
+            <div class="sent-message" style="color:#ffffff;background-color:goldenrod;padding:10px;">
+                {{ mensaje}}
+            </div>
+        </div>
+        {% endif %}
+
+          <form action="/app1/entregables/" method="post" role="form" class="php-email-form">
+            <div class="form-group">
+                {{ formulario.nombre }}
+            </div>
+            <div class="mt-3">Selecciona la Fecha de Entrega:</div>
+            <div class="form-group mt-3" style="border:1px solid #dbd9db; padding: 15px;">
+                {{ formulario.fechaDeEntrega }}
+            </div>
+            <div class="form-group mt-3">
+                <label>{{ formulario.entregado }} Entregado</label>
+            </div>
+            <div class="form-group mt-3">
+                {{ formulario.detalle }}
+            </div>
+            <div class="my-3">
+              <div class="loading">Cargando</div>
+              <div class="error-message"></div>
+              <div class="sent-message">El Entregable se ingresó con éxito. Gracias!</div>
+            </div>
+            <div class="text-center">
+                {% csrf_token %}
+                <button type="submit">Ingresar Entregable</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+{% endblock%}
+
+{% block bloqueListado%} 
+<section class="faq">
+    <div class="container">
+      <div class="section-title">
+        <h2>Listado de Entregables ({{ cantidad }})</h2>
+      </div>
+      <ul class="faq-list">
+        {% for entregable in entregables %}
+        <li>
+          <a data-bs-toggle="collapse" class="collapsed" data-bs-target="#faq{{ entregable.id }}">{{ entregable.nombre }} <i class="bx bx-down-arrow-alt icon-show"></i><i class="bx bx-x icon-close"></i></a>
+          <div id="faq{{ entregable.id }}" class="collapse" data-bs-parent=".faq-list">
+            <p>
+                Fecha de Entrega: {{ entregable.fechaDeEntrega }}<br>
+                Entregado: {% if entregable.entregado %} Si {% else %}No{% endif%}<br>
+                Observaciones: {{ entregable.detalle }}<br>
+            </p>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
 {% endblock%}
